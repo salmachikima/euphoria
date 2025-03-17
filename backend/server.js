@@ -9,7 +9,7 @@ app.use(cors());
 const PORT = process.env.PORT || 3001;  // Change the port to 3001
 
 app.get("/", (req, res) => {
-    res.send("Backend is running! 🚀");
+    res.send("Backend is running!");
 });
 
 app.listen(PORT, "0.0.0.0", () => {
