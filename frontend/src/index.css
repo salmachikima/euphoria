@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Tektur:wght@700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+  background: url("https://source.unsplash.com/1600x900/?nebula,galaxy");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.glow-text {
+  text-shadow: 0px 0px 8px rgba(0, 255, 255, 0.8);
+}
+
+.neon-button {
+  background-color: #FF007F;
+  color: white;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-weight: bold;
+  transition: 0.3s;
+  box-shadow: 0 0 8px rgba(255, 0, 127, 0.8);
+}
+
+.neon-button:hover {
+  box-shadow: 0 0 20px rgba(255, 0, 127, 1);
+  transform: scale(1.05);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-image: url('/galaxy-bg.jpg'); /* Use '/assets/galaxy-bg.jpg' if stored in src/assets */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Keeps it from scrolling */
+}
