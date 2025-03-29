@@ -1,47 +1,55 @@
 import { useState } from "react";
+import axios from "axios";
+import "./ChatBox.css";
 
 const ChatBox = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState("");
+  const [message, setMessage] = useState("");
+  const [responses, setResponses] = useState([]);
 
-  const sendMessage = () => {
-    if (input.trim() === "") return;
+  const sendMessage = async () => {
+    if (!message.trim()) return; // Don't send empty messages
 
-    const newMessage = { text: input, sender: "user" };
-    setMessages([...messages, newMessage]);
+    try {
+      const res = await axios.get('http://127.0.0.1:8000/api/chat', { params: { mood: message }
+      });
 
-    // Simulate AI response (we’ll connect this to the backend later)
-    setTimeout(() => {
-      const botResponse = { text: "I'm still learning! Real AI coming soon.", sender: "bot" };
-      setMessages([...messages, newMessage, botResponse]);
-    }, 1000);
+      setResponses([...responses, { user: message, bot: res.data.response }]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setResponses([...responses, { user: message, bot: "Error connecting to the server." }]);
+    }
 
-    setInput(""); // Clear input field
+    setMessage(""); // Clear input after sending
   };
 
   return (
-    <div className="flex flex-col w-full h-screen bg-deepBlue p-6 text-white">
-      <div className="flex-1 overflow-y-auto mb-4">
-        {messages.map((msg, index) => (
-          <div key={index} className={`p-2 my-1 rounded-lg ${msg.sender === "user" ? "bg-gold text-black self-end" : "bg-purple-500"}`}>
-            {msg.text}
+    <div className="flex flex-col h-screen bg-black text-white p-6">
+      <h1 className="text-4xl font-bold text-center mb-4">Euphoria Chat</h1>
+      <div className="flex-1 overflow-y-auto border border-gray-500 p-4 rounded-md">
+        {responses.map((resp, index) => (
+          <div key={index} className="mb-2">
+            <p className="text-blue-400">You: {resp.user}</p>
+            <p className="text-green-400">Euphoria: {resp.bot}</p>
           </div>
         ))}
       </div>
-      
-      <div className="flex">
+      <div className="flex mt-4">
         <input
           type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()} 
-          className="flex-1 p-2 rounded-lg border-none focus:ring-2 focus:ring-gold text-black"
-          placeholder="Type your message..."
+          className="flex-1 p-2 border rounded text-black"
+          placeholder="Type your mood..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
-        <button onClick={sendMessage} className="ml-2 bg-neonPink px-4 py-2 rounded-lg">Send</button>
+        <button
+          onClick={sendMessage}
+          className="ml-2 p-2 bg-blue-600 hover:bg-blue-800 rounded text-white"
+        >
+          Send
+        </button>
       </div>
     </div>
   );
-};
-
+}
 export default ChatBox;
